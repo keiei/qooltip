@@ -16,7 +16,7 @@
  *                border-radius: 4px;
  *                color: #fff;
  *                font: 12px/1 sans-serif;
- *                top: -199%;
+ *                top: -99%;
  *                position: fixed;
  *                padding: 5px 10px;
  *                white-space: nowrap;
@@ -30,7 +30,7 @@
  *    4) deal with it
  *
  * Example:
- *     <a href="#" data-qooltip="Only 767 KB <em>minified</em>">Download</a>
+ *     <a href="#" data-qooltip="Only 765 KB <em>minified</em>">Download</a>
  *
  */
 (function (window, document)
