@@ -1,16 +1,12 @@
 # Qooltip
 
-Minimal vanilla js tooltip with no options. Intended only for text, but tags like ```html<strong>``` and ```html<em>``` can be used to highlight some words. Think of this plugin as native title attribute tooltip replacement.
-
-***
+Minimal vanilla js tooltip with no options. Intended only for text, but tags like ```<strong>``` and ```<em>``` can be used to highlight some words. Think of this plugin as native title attribute tooltip replacement.
 
 ## Demo
 https://qarlis.github.io/qooltip
 
-***
-
 ## Usage
-1. add this to your css file
+1) add this to your css file
 
 ```css
 #qooltip {
@@ -26,12 +22,10 @@ https://qarlis.github.io/qooltip
 }
 ```
 
-**If you you don't want to use CSS open qooltip.js and uncomment js styling lines**
+If you you don't want to use CSS open ```qooltip.js``` and uncomment js styling lines
 
-2. add qooltip.min.js to your site
-3. add data-qooltip="Lorem ipsum" to any element
-
-***
+2) add ```qooltip.min.js``` to your site <br>
+3) add ```data-qooltip="Lorem ipsum"``` to any element
 
 ## Example
 
