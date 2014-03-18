@@ -42,6 +42,8 @@
         addEventListener = 'addEventListener', // Save some bytes
         dataAttrName = 'data-qooltip',         //
         style = 'style',                       //
+        target = 'target',                     //
+        attributes = 'attributes',             //
         body,
         tip = document.createElement('div'),
         tipWidth,
@@ -74,27 +76,33 @@
 
     document[addEventListener]('mouseover', function(e)
     {
-        if (e.target.attributes[dataAttrName]) {
+        if (e[target][attributes][dataAttrName]) {
             mouseOverHandler(e);
         }
     });
 
     document[addEventListener]('mousemove', function(e)
     {
-        if (e.target.attributes[dataAttrName]) {
+        if (e[target][attributes][dataAttrName]) {
             mouseMoveHandler(e);
-        } else {
-            hideTip();
         }
     });
 
     document[addEventListener]('mousedown', function(e)
     {
+        // if (e[target][attributes][dataAttrName]) {
+        //     hideTip();
+        // }
+
         hideTip();
     });
 
-    document[addEventListener]('mouseleave', function(e)
+    document[addEventListener]('mouseout', function(e)
     {
+        // if (e[target][attributes][dataAttrName]) {
+        //     hideTip();
+        // }
+
         hideTip();
     });
 
@@ -105,7 +113,7 @@
         e.stopPropagation();
 
         // Populate tooltip with some content
-        tip.innerHTML = e.target.getAttribute(dataAttrName);
+        tip.innerHTML = e[target].getAttribute(dataAttrName);
 
         // Get width and height of tooltip
         tipWidth = tip.offsetWidth;
@@ -127,7 +135,7 @@
 
         // Check if tooltip is not going out of the horizontal window bonds
         if ((mouseX + tipWidth + tipOffsetX) > winWidth) {
-            // - 6 so offset looks as same as on the right side (Mac Chrome)
+            // - 6 so offset looks as same as on the right side (Mac Chrome 33.0.1750.152)
             tip[style].left = mouseX - tipWidth - (tipOffsetX - 6) + 'px';
         }
 
@@ -136,7 +144,9 @@
             tip[style].top = mouseY - tipHeight - tipOffsetY + 'px';
         }
 
-        if (mouseY < 1 || mouseX > winWidth) {
+        // Sometimes when mouse is moved slowly out of the window mouseout event
+        // doesn't fire so we have to manually hide the tooltip (Mac Chrome 33.0.1750.152)
+        if (mouseY < 1 || mouseY > winHeight || mouseX < 1 || mouseX > winWidth) {
             hideTip();
         }
     }
