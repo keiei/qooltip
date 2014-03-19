@@ -106,7 +106,7 @@
     /**
      * Mouseover event handler for elements that have data-qooltip="Lorem"
      *
-     * @param  {object} e event object
+     * @param {object} e event object
      */
     function mouseOverHandler(e)
     {
@@ -129,7 +129,7 @@
     /**
      * Mousemove event handler for elements that have data-qooltip="Lorem"
      *
-     * @param  {object} e event object
+     * @param {object} e event object
      */
     function mouseMoveHandler(e)
     {
