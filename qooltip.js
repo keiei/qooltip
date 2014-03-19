@@ -85,23 +85,9 @@
         }
     });
 
-    document[addEventListenerString]('mousedown', function(e)
-    {
-        // if (e[targetString][attributesString][dataAttrNameString]) {
-        //     hideTip();
-        // }
+    document[addEventListenerString]('mousedown', hideTip);
 
-        hideTip();
-    });
-
-    document[addEventListenerString]('mouseout', function(e)
-    {
-        // if (e[targetString][attributesString][dataAttrNameString]) {
-        //     hideTip();
-        // }
-
-        hideTip();
-    });
+    document[addEventListenerString]('mouseout', hideTip);
 
     /**
      * Mouseover event handler for elements that have data-qooltip="Lorem"
