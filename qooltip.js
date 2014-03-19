@@ -103,6 +103,11 @@
         hideTip();
     });
 
+    /**
+     * Mouseover event handler for elements that have data-qooltip="Lorem"
+     *
+     * @param  {object} e event object
+     */
     function mouseOverHandler(e)
     {
         // Stop bubbling so elements inside
@@ -121,6 +126,11 @@
         winHeight = window.innerHeight;
     }
 
+    /**
+     * Mousemove event handler for elements that have data-qooltip="Lorem"
+     *
+     * @param  {object} e event object
+     */
     function mouseMoveHandler(e)
     {
         mouseX = e.clientX;
@@ -148,6 +158,9 @@
         }
     }
 
+    /**
+     * Hides tooltip by moving it out of the viewport
+     */
     function hideTip()
     {
         tip[styleString].top = '-99%';
