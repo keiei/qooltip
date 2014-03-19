@@ -44,7 +44,6 @@
         style = 'style',                       //
         target = 'target',                     //
         attributes = 'attributes',             //
-        body,
         tip = document.createElement('div'),
         tipWidth,
         tipHeight,
@@ -55,8 +54,6 @@
 
     document[addEventListener]('DOMContentLoaded', function()
     {
-        body = document.getElementsByTagName('body')[0];
-
         tip.id = 'qooltip';
 
         // js-styles
@@ -71,7 +68,7 @@
         // tip[style].whiteSpace = 'nowrap';
         // tip[style].zIndex = 9999;
 
-        body.appendChild(tip);
+        document.body.appendChild(tip);
     });
 
     document[addEventListener]('mouseover', function(e)
