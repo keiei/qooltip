@@ -35,5 +35,5 @@ If you you don't want to use CSS open ```qooltip.js``` and uncomment js styling 
 ## Example
 
 ```html
-<a href="#" data-qooltip="Only 707 KB <em>minified</em>">Download</a>
+<a href="#" data-qooltip="Only 707 B <em>minified</em>">Download</a>
 ```

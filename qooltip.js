@@ -30,7 +30,7 @@
  *    4) deal with it
  *
  * Example:
- *     <a href="#" data-qooltip="Only 765 KB <em>minified</em>">Download</a>
+ *     <a href="#" data-qooltip="Only 707 B <em>minified</em>">Download</a>
  *
  */
 (function (window, document)
