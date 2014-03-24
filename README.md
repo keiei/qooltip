@@ -33,6 +33,7 @@ https://qarlis.github.io/qooltip
 
 ```html
 <a href="#" data-qooltip="Only 1.14 KB <em>minified</em>">Download</a>
+```
 
 ## Example 2
 If elements that have tooltip are added dynamically then ```data-qooltip-delegate``` attribute needs to be added to one of the parents.
