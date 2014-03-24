@@ -12,6 +12,7 @@
  *     1) add this to your css file
  *
  *            #qooltip {
+ *                background: #000;
  *                background: rgba(0, 0, 0, 0.8);
  *                border-radius: 4px;
  *                color: #fff;
@@ -23,14 +24,12 @@
  *                z-index: 9999;
  *            }
  *
- *            Don't want to use css? Scroll down to js-styles.
- *
  *    2) minify this file and add to your site
  *    3) add data-qooltip="Lorem ipsum" to any element
  *    4) deal with it
  *
  * Example:
- *     <a href="#" data-qooltip="Only 707 B <em>minified</em>">Download</a>
+ *     <a href="#" data-qooltip="Only 1.14KB <em>minified</em>">Download</a>
  *
  */
 (function (window, document)
@@ -39,116 +38,132 @@
 
     var winWidth,
         winHeight,
-        addEventListenerString = 'addEventListener', // Save some bytes
-        dataAttrNameString = 'data-qooltip',         //
-        styleString = 'style',                       //
-        targetString = 'target',                     //
-        attributesString = 'attributes',             //
+        tipTriggers,
+        tipTriggerDelegates,
         tip = document.createElement('div'),
         tipWidth,
         tipHeight,
         tipOffsetX = 20, // Margin between tooltip and cursor
         tipOffsetY = 5,  //
-        mouseX, // Mouse coordinates (ex e.clientX)
-        mouseY; //
+        mouseX, // Mouse coordinates
+        mouseY, //
+        mouseEvents = ['mouseover', 'mousemove', 'mousedown', 'mouseout'],
+        mouseEvent,
+        eventTarget = document.attachEvent ? 'srcElement' : 'target';
 
-    document[addEventListenerString]('DOMContentLoaded', function()
+    addEventListener(document, 'DOMContentLoaded', function()
     {
+        var i, j;
+
         tip.id = 'qooltip';
-
-        // js-styles
-        // Uncomment these lines if you want to add style with js instead
-        // tip[styleString].background = 'rgba(0, 0, 0, 0.8)';
-        // tip[styleString].borderRadius = '4px';
-        // tip[styleString].color = '#fff';
-        // tip[styleString].left = '-99%';
-        // tip[styleString].font = '12px/1 sans-serif';
-        // tip[styleString].position = 'fixed';
-        // tip[styleString].padding = '5px 10px';
-        // tip[styleString].whiteSpace = 'nowrap';
-        // tip[styleString].zIndex = 9999;
-
         document.body.appendChild(tip);
-    });
 
-    document[addEventListenerString]('mouseover', function(e)
-    {
-        if (e[targetString][attributesString][dataAttrNameString]) {
-            mouseOverHandler(e);
+        tipTriggerDelegates = document.querySelectorAll('[data-qooltip-delegate]');
+        i = tipTriggerDelegates.length;
+
+        while(i--) {
+            j = 4; // 4 mouse events
+            while(j--) {
+                addEventListener(tipTriggerDelegates[i], mouseEvents[j], handleEvent);
+            }
+        }
+
+        tipTriggers = document.querySelectorAll('[data-qooltip]');
+        i = tipTriggers.length;
+
+        while(i--) {
+            j = 4; // 4 mouse events
+            while(j--) {
+                addEventListener(tipTriggers[i], mouseEvents[j], handleEvent);
+            }
         }
     });
-
-    document[addEventListenerString]('mousemove', function(e)
-    {
-        if (e[targetString][attributesString][dataAttrNameString]) {
-            mouseMoveHandler(e);
-        }
-    });
-
-    document[addEventListenerString]('mousedown', hideTip);
-
-    document[addEventListenerString]('mouseout', hideTip);
 
     /**
-     * Mouseover event handler for elements that have data-qooltip="Lorem"
+     * Handles all mouse events
      *
-     * @param {object} e event object
+     * @param  {obj} e Event object
      */
-    function mouseOverHandler(e)
+    function handleEvent(e)
     {
-        // Stop bubbling so elements inside
-        // other elements can have tooltip
-        e.stopPropagation();
+        mouseEvent = e.type;
 
-        // Populate tooltip with some content
-        tip.innerHTML = e[targetString].getAttribute(dataAttrNameString);
+        // Bail early if not qooltip element/trigger
+        // This is needed for delegated events
+        if ( ! e[eventTarget].attributes['data-qooltip']) {
+            return;
+        }
 
-        // Get width and height of tooltip
-        tipWidth = tip.offsetWidth;
-        tipHeight = tip.offsetHeight;
+        if (mouseEvent === 'mouseover') {
+            // Stop bubbling so elements inside
+            // other elements can have tooltip
+            if(e.stopPropagation) {
+                e.stopPropagation();
+            } else {
+                e.returnValue = false;
+            }
 
-        // Get width and height of window
-        winWidth = window.innerWidth;
-        winHeight = window.innerHeight;
+            // Populate tooltip with some content
+            tip.innerHTML = e[eventTarget].getAttribute('data-qooltip');
+
+            // Get width and height of tooltip
+            tipWidth = tip.offsetWidth;
+            tipHeight = tip.offsetHeight;
+
+            // Get width and height of window
+            winWidth = document.documentElement.clientWidth;
+            winHeight = document.documentElement.clientHeight;
+        } else if (mouseEvent === 'mousemove') {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+
+            // Set default position
+            tip.style.top = mouseY + tipOffsetY + 'px';
+            tip.style.left = mouseX + tipOffsetX + 'px';
+
+            // Check if tooltip is not going out of the horizontal window bonds
+            if ((mouseX + tipWidth + tipOffsetX) > winWidth) {
+                // - 6 so offset looks as same as on the right side (Mac Chrome 33.0.1750.152)
+                tip.style.left = mouseX - tipWidth - (tipOffsetX - 6) + 'px';
+            }
+
+            // Check if tooltip is not going out of the vertical window bonds
+            if ((mouseY + tipHeight + tipOffsetY) > winHeight) {
+                tip.style.top = mouseY - tipHeight - tipOffsetY + 'px';
+            }
+
+            // Sometimes when mouse is moved slowly out of the window mouseout event
+            // doesn't fire so we have to manually hide the tooltip (Mac Chrome 33.0.1750.152)
+            if (mouseY < 1 || mouseY > winHeight || mouseX < 1 || mouseX > winWidth) {
+                tip.style.top = '-99%';
+            }
+        } else if (mouseEvent === 'mousedown' || 'mouseout') {
+            tip.style.top = '-99%';
+        }
     }
 
     /**
-     * Mousemove event handler for elements that have data-qooltip="Lorem"
+     * Legacy wrapper for addEventListener
      *
-     * @param {object} e event object
+     * @param {node} el
+     * @param {string} eventName
+     * @param {function} handler
      */
-    function mouseMoveHandler(e)
+    function addEventListener(el, eventName, handler)
     {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-
-        // Set default position
-        tip[styleString].top = mouseY + tipOffsetY + 'px';
-        tip[styleString].left = mouseX + tipOffsetX + 'px';
-
-        // Check if tooltip is not going out of the horizontal window bonds
-        if ((mouseX + tipWidth + tipOffsetX) > winWidth) {
-            // - 6 so offset looks as same as on the right side (Mac Chrome 33.0.1750.152)
-            tip[styleString].left = mouseX - tipWidth - (tipOffsetX - 6) + 'px';
-        }
-
-        // Check if tooltip is not going out of the vertical window bonds
-        if ((mouseY + tipHeight + tipOffsetY) > winHeight) {
-            tip[styleString].top = mouseY - tipHeight - tipOffsetY + 'px';
-        }
-
-        // Sometimes when mouse is moved slowly out of the window mouseout event
-        // doesn't fire so we have to manually hide the tooltip (Mac Chrome 33.0.1750.152)
-        if (mouseY < 1 || mouseY > winHeight || mouseX < 1 || mouseX > winWidth) {
-            hideTip();
+        if (el.addEventListener) {
+            el.addEventListener(eventName, handler);
+        } else {
+            if (eventName === 'DOMContentLoaded') {
+                document.attachEvent('onreadystatechange', function()
+                {
+                    if (document.readyState === 'complete') {
+                        handler();
+                    }
+                });
+            } else {
+                el.attachEvent('on' + eventName, handler);
+            }
         }
     }
-
-    /**
-     * Hides tooltip by moving it out of the viewport
-     */
-    function hideTip()
-    {
-        tip[styleString].top = '-99%';
-    }
-})(window, document);
+})(this, this.document);
