@@ -36,10 +36,10 @@ https://qarlis.github.io/qooltip
 ```
 
 ## Example 2
-If elements that have tooltip are added dynamically then ```data-qooltip-delegate``` attribute needs to be added to one of the parents.
+If elements that have tooltip are added dynamically then ```data-qooltip-set``` attribute needs to be added to one of the parents.
 
 ```html
-<ul data-qooltip-delegate>
+<ul data-qooltip-set>
     <li class="i-am-dynamically-added" data-qooltip="Lorem ipsum!">Item 1</li>
     <li class="i-am-dynamically-added" data-qooltip="Lorem ipsum!">Item 2</li>
     <li class="i-am-dynamically-added" data-qooltip="Lorem ipsum!">Item 3</li>

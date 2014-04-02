@@ -39,7 +39,7 @@
     var winWidth,
         winHeight,
         tipTriggers,
-        tipTriggerDelegates,
+        tipTriggerSets,
         tip = document.createElement('div'),
         tipWidth,
         tipHeight,
@@ -58,13 +58,13 @@
         tip.id = 'qooltip';
         document.body.appendChild(tip);
 
-        tipTriggerDelegates = document.querySelectorAll('[data-qooltip-delegate]');
-        i = tipTriggerDelegates.length;
+        tipTriggerSets = document.querySelectorAll('[data-qooltip-set]');
+        i = tipTriggerSets.length;
 
         while(i--) {
             j = 4; // 4 mouse events
             while(j--) {
-                addEventListener(tipTriggerDelegates[i], mouseEvents[j], handleEvent);
+                addEventListener(tipTriggerSets[i], mouseEvents[j], handleEvent);
             }
         }
 
