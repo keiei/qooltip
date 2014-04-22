@@ -32,7 +32,7 @@
  *     <a href="#" data-qooltip="Only 1.14KB <em>minified</em>">Download</a>
  *
  */
-(function (window, document)
+(function (document)
 {
     'use strict';
 
@@ -166,4 +166,4 @@
             }
         }
     }
-})(this, this.document);
+})(this.document);
