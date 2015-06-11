@@ -6,7 +6,7 @@ Minimal vanilla js tooltip with no options. Intended only for text, but tags lik
 IE8+
 
 ## Demo
-https://qarlis.github.io/qooltip
+http://apps.webvois.com/qooltip/
 
 ## Usage
 1) add this to your css file
